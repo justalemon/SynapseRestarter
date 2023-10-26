@@ -12,6 +12,7 @@
         <DebugSymbols>true</DebugSymbols>
         <OutputType>Exe</OutputType>
         <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
 
