@@ -16,7 +16,7 @@ jobs:
   lint-and-compile:
     strategy:
       matrix:
-        configuration: [Debug, Release, AoT]
+        configuration: [Debug, Release]
         os: [ubuntu-22.04]
         include:
           - configuration: AoT
