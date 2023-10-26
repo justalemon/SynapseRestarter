@@ -54,7 +54,7 @@ public static class Program
             new ServiceController("Razer Synapse Service"),
             new ServiceController("Razer Game Manager Service"),
             new ServiceController("Razer Chroma Stream Server"),
-            new ServiceController("Razer Chroma SDL Server"),
+            new ServiceController("Razer Chroma SDK Service"),
             new ServiceController("Razer Chroma SDK Server"),
             new ServiceController("RzActionSvc")
         };
