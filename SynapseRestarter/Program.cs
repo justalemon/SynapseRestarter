@@ -88,6 +88,9 @@ public static class Program
         return 0;
     }
 
+    /// <summary>
+    /// Installs SynapseRestarter.
+    /// </summary>
     public static int Install()
     {
         string? synapseExecutable = GetExecutable();
