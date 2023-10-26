@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.ServiceProcess;
 using Microsoft.Win32;
 
 namespace SynapseRestarter;
@@ -43,5 +46,42 @@ public static class Program
     /// </summary>
     public static void Main()
     {
+        string? executable = GetExecutable();
+
+        if (executable == null)
+        {
+            Console.Error.WriteLine("Razer Synapse 3 does not appears to be installed!");
+            return;
+        }
+
+        if (!File.Exists(executable))
+        {
+            Console.Error.WriteLine("Razer Synapse 3 executable does not exists!");
+            return;
+        }
+        
+        ServiceController synapseController = new ServiceController("Razer Synapse Service");
+        ServiceController gameManagerController = new ServiceController("Razer Game Manager Service");
+        ServiceController chromaStreamController = new ServiceController("Razer Chroma Stream Server");
+        ServiceController chromaSdlController = new ServiceController("Razer Chroma SDL Server");
+        ServiceController chromaSdkController = new ServiceController("Razer Chroma SDK Server");
+        ServiceController centralController = new ServiceController("RzActionSvc");
+
+        try
+        {
+            synapseController.Stop();
+            gameManagerController.Stop();
+            chromaStreamController.Stop();
+            chromaSdlController.Stop();
+            chromaSdkController.Stop();
+            centralController.Stop();
+        }
+        catch (InvalidOperationException)
+        {
+            Console.Error.WriteLine("Access denied to stop the Razer Synapse 3 services");
+            return;
+        }
+
+        Process.Start(executable);
     }
 }
