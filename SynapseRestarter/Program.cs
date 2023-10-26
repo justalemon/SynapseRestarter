@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.ServiceProcess;
@@ -47,27 +48,36 @@ public static class Program
             Console.Error.WriteLine("Razer Synapse 3 executable does not exists!");
             return;
         }
-        
-        ServiceController synapseController = new ServiceController("Razer Synapse Service");
-        ServiceController gameManagerController = new ServiceController("Razer Game Manager Service");
-        ServiceController chromaStreamController = new ServiceController("Razer Chroma Stream Server");
-        ServiceController chromaSdlController = new ServiceController("Razer Chroma SDL Server");
-        ServiceController chromaSdkController = new ServiceController("Razer Chroma SDK Server");
-        ServiceController centralController = new ServiceController("RzActionSvc");
 
-        try
+        List<ServiceController> services = new List<ServiceController>()
         {
-            synapseController.Stop();
-            gameManagerController.Stop();
-            chromaStreamController.Stop();
-            chromaSdlController.Stop();
-            chromaSdkController.Stop();
-            centralController.Stop();
-        }
-        catch (InvalidOperationException)
+            new ServiceController("Razer Synapse Service"),
+            new ServiceController("Razer Game Manager Service"),
+            new ServiceController("Razer Chroma Stream Server"),
+            new ServiceController("Razer Chroma SDL Server"),
+            new ServiceController("Razer Chroma SDK Server"),
+            new ServiceController("RzActionSvc")
+        };
+
+        foreach (ServiceController service in services)
         {
-            Console.Error.WriteLine("Access denied to stop the Razer Synapse 3 services");
-            return;
+            try
+            {
+                if (service.Status != ServiceControllerStatus.Stopped)
+                {
+                    Console.WriteLine($"Stopping {service.DisplayName} ({service.ServiceName})");
+                    service.Stop();
+                }
+                else
+                {
+                    Console.WriteLine($"Process {service.DisplayName} ({service.ServiceName}) is already stopped");
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine($"Unable to stop {service.DisplayName} ({service.ServiceName}): {e}");
+                return;
+            }
         }
 
         Process.Start(executable);
