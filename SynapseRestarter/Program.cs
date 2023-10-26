@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
+using IWshRuntimeLibrary;
 using Microsoft.Win32;
+using File = System.IO.File;
 
 namespace SynapseRestarter;
 
@@ -88,6 +90,8 @@ public static class Program
 
     public static int Install()
     {
+        string synapseExecutable = GetExecutable();
+        
         const string path = @"C:\Program Files\SynapseRestarter";
         Directory.CreateDirectory(path);
 
@@ -103,9 +107,18 @@ public static class Program
         }
 
         string pdbLocation = Path.ChangeExtension(exeLocation, ".pdb");
+        string finalExePath = Path.Combine(path, Path.GetFileName(exeLocation));
         
-        File.Copy(exeLocation, Path.Combine(path, Path.GetFileName(exeLocation)));
+        File.Copy(exeLocation, finalExePath);
         File.Copy(pdbLocation, Path.Combine(path, Path.GetFileName(pdbLocation)));
+
+        string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Restart Razer Synapse 3.lnk");
+        
+        WshShell shell = new WshShell();
+        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+        shortcut.IconLocation = $"{synapseExecutable},0";
+        shortcut.TargetPath = finalExePath;
+        shortcut.Save();
 
         return 0;
     }
