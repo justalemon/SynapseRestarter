@@ -16,7 +16,7 @@ jobs:
   lint-and-compile:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Debug, Release, AoT]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +29,11 @@ jobs:
           version: 1.10.0.${{ github.run_number }}
           use-tag: true
           csproj-files: "**/*.csproj"
-      - run: dotnet build ${{ github.event.repository.name }}.sln -c ${{ matrix.configuration }}
+      - if: ${{ matrix.configuration != 'AoT' }}
+        run: dotnet build ${{ github.event.repository.name }}.sln -c ${{ matrix.configuration }}
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
+      - if: ${{ matrix.configuration == 'AoT' }}
+        run: dotnet publish ${{ github.event.repository.name }}.sln -r win-x64 -c Release -o bin\${{ matrix.configuration }}
         working-directory: ${{ env.GITHUB_WORKSPACE }}
       - uses: actions/upload-artifact@v3
         with:
