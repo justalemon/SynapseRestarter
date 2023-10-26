@@ -90,7 +90,13 @@ public static class Program
 
     public static int Install()
     {
-        string synapseExecutable = GetExecutable();
+        string? synapseExecutable = GetExecutable();
+
+        if (synapseExecutable is null)
+        {
+            Console.Error.WriteLine("Synapse is not installed. This is required for SynapseRestarter to be installed.");
+            return 3;
+        }
         
         const string path = @"C:\Program Files\SynapseRestarter";
         Directory.CreateDirectory(path);
