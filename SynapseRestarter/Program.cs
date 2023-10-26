@@ -33,20 +33,20 @@ public static class Program
     /// <summary>
     /// The main entry point.
     /// </summary>
-    public static void Main()
+    public static int Main()
     {
         string? executable = GetExecutable();
 
         if (executable == null)
         {
             Console.Error.WriteLine("Razer Synapse 3 does not appears to be installed!");
-            return;
+            return 2;
         }
 
         if (!File.Exists(executable))
         {
             Console.Error.WriteLine("Razer Synapse 3 executable does not exists!");
-            return;
+            return 3;
         }
 
         List<ServiceController> services = new List<ServiceController>()
@@ -76,10 +76,12 @@ public static class Program
             catch (InvalidOperationException e)
             {
                 Console.WriteLine($"Unable to stop {service.DisplayName} ({service.ServiceName}): {e}");
-                return;
+                return 4;
             }
         }
 
         Process.Start(executable);
+
+        return 0;
     }
 }
