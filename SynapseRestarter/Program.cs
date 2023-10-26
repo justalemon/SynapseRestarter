@@ -17,28 +17,16 @@ public static class Program
     /// <returns>The path to the main Razer Synapse 3 executable.</returns>
     public static string? GetExecutable()
     {
-        RegistryKey? key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Razer Synapse");
+        RegistryKey? key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Razer Synapse");
 
-        if (key == null)
-        {
-            return null;
-        }
-
-        object? icon = key.GetValue("DisplayIcon");
-
-        if (icon is not string iconFilePath)
+        if (key?.GetValue("DisplayIcon") is not string iconFilePath)
         {
             return null;
         }
 
         string? synapsePath = Path.GetDirectoryName(Path.GetDirectoryName(iconFilePath));
 
-        if (synapsePath == null)
-        {
-            return null;
-        }
-
-        return Path.Join(synapsePath, "WPFUI", "Framework", "Razer Synapse 3 Host", "Razer Synapse 3.exe");
+        return synapsePath == null ? null : Path.Join(synapsePath, "WPFUI", "Framework", "Razer Synapse 3 Host", "Razer Synapse 3.exe");
     }
     
     /// <summary>
