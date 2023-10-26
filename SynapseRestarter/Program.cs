@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.ServiceProcess;
 using Microsoft.Win32;
 
@@ -31,9 +32,9 @@ public static class Program
     }
     
     /// <summary>
-    /// The main entry point.
+    /// Restarts the Synapse programs.
     /// </summary>
-    public static int Main()
+    public static int Restart()
     {
         string? executable = GetExecutable();
 
@@ -83,5 +84,42 @@ public static class Program
         Process.Start(executable);
 
         return 0;
+    }
+
+    public static int Install()
+    {
+        const string path = @"C:\Program Files\SynapseRestarter";
+        Directory.CreateDirectory(path);
+
+        foreach (string file in Directory.EnumerateFiles(path))
+        {
+            File.Delete(file);
+        }
+        
+        if (Environment.ProcessPath is not string exeLocation)
+        {
+            Console.Error.WriteLine("Couldn't obtain current executable path. Was this exe imported?");
+            return 2;
+        }
+
+        string pdbLocation = Path.ChangeExtension(exeLocation, ".pdb");
+        
+        File.Copy(exeLocation, Path.Combine(path, Path.GetFileName(exeLocation)));
+        File.Copy(pdbLocation, Path.Combine(path, Path.GetFileName(pdbLocation)));
+
+        return 0;
+    }
+
+    /// <summary>
+    /// The main entry point.
+    /// </summary>
+    public static int Main(string[] args)
+    {
+        if (args.Contains("install"))
+        {
+            return Install();
+        }
+
+        return Restart();
     }
 }
