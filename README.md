@@ -19,7 +19,7 @@ Open SynapseRestarter by using the exe file directly or the shortcut in your sta
 
 ## Developers
 
-Clone the repo, restore the packages and run 
+Clone the repo, restore the packages and open the solution in your favorite IDE.
 
 [actions-img]: https://img.shields.io/github/actions/workflow/status/justalemon/SynapseRestarter/main.yml?branch=master&label=actions
 [actions-url]: https://github.com/justalemon/SynapseRestarter/actions
