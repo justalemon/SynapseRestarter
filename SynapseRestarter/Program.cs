@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using IWshRuntimeLibrary;
 using Microsoft.Win32;
+using WindowsShortcutFactory;
 using File = System.IO.File;
 
 namespace SynapseRestarter;
@@ -122,12 +122,13 @@ public static class Program
         File.Copy(pdbLocation, Path.Combine(path, Path.GetFileName(pdbLocation)));
 
         string shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu), "Restart Razer Synapse 3.lnk");
-        
-        WshShell shell = new WshShell();
-        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-        shortcut.IconLocation = $"{synapseExecutable},0";
-        shortcut.TargetPath = finalExePath;
-        shortcut.Save();
+
+        WindowsShortcut shortcut = new WindowsShortcut
+        {
+            IconLocation = $"{synapseExecutable},0",
+            Path = finalExePath
+        };
+        shortcut.Save(shortcutPath);
 
         return 0;
     }
