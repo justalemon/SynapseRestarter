@@ -138,11 +138,6 @@ public static class Program
     /// </summary>
     public static int Main(string[] args)
     {
-        if (args.Contains("install"))
-        {
-            return Install();
-        }
-
-        return Restart();
+        return args.Contains("install") ? Install() : Restart();
     }
 }
