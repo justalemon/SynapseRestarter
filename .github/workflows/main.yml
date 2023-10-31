@@ -55,7 +55,7 @@ jobs:
           dotnet-version: "7.0.x"
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ github.event.repository.name }}.Release
+          name: ${{ github.event.repository.name }}.AoT
           path: bin/Release
       - run: 7z a ${{ github.event.repository.name }}.zip ${{ github.workspace }}/bin/Release/*
       - uses: ncipollo/release-action@v1.10.0
