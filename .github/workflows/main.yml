@@ -24,7 +24,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-dotnet@v4.1.0
+      - uses: actions/setup-dotnet@v4.2.0
         with:
           dotnet-version: "7.0.x"
       - run: dotnet restore ${{ github.event.repository.name }}.sln
@@ -50,7 +50,7 @@ jobs:
       - lint-and-compile
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-dotnet@v4.1.0
+      - uses: actions/setup-dotnet@v4.2.0
         with:
           dotnet-version: "7.0.x"
       - uses: actions/download-artifact@v4.1.8
