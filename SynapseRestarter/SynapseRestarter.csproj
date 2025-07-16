@@ -18,7 +18,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.1" />
+
+      <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="9.0.7" />
+
+      <PackageReference Include="Microsoft.NET.ILLink.Analyzers" Version="7.0.100-1.23401.1" />
+
+      <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="7.0.100-1.23401.1" />
+      <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.7" />
       <None Update="Install.bat">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
