@@ -58,7 +58,7 @@ jobs:
           name: ${{ github.event.repository.name }}.AoT
           path: bin/Release
       - run: 7z a ${{ github.event.repository.name }}.zip ${{ github.workspace }}/bin/Release/*
-      - uses: ncipollo/release-action@v1.16.0
+      - uses: ncipollo/release-action@v1.20.0
         with:
           allowUpdates: true
           artifactErrorsFailBuild: true
